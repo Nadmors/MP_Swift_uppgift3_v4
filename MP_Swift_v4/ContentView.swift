@@ -11,53 +11,68 @@ Lägg upp projektet publikt på GitHub och lägg in länk nedan */
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var apistuff = ChuckAPI()
+    @StateObject var api = ChuckAPI()
     @State var thejoke = ""
     @State var lookingfor = ""
-    @State var titletext = "Chuckyjokey"
-    @State var queryinfo = "This is a randomized Chuck Norris joke"
-   
+    @State var titletext = "Chuckles with Chuck"
+    @State var queryinfo = "You have been subjected to a randomized Chuck Norris joke" //if the types of jokes change
+    @State var urlstring = "https://api.chucknorris.io/jokes/random" //to be able to easily change url in code
+    
     
     
     
     var body: some View {
-       
-        VStack {
-            Image("Hat")
+        VStack{
+            Spacer()
             Text(titletext)
                 .font(.largeTitle)
+                .foregroundColor(.brown)
             
-            Text(queryinfo)
-                .foregroundColor(Color.orange)
-                .padding()
-            
-            Text(apistuff.joketext)
-
-            
-                     
-            /*
-            Text("Hey, this ain't my first rodeo! Tell me a joke about:")
-                .frame(width: 2.0, height: 2.0)
-            
-             TextField(
-            "Enter what to look for",
-            text: $lookingfor)
-                 .textFieldStyle(RoundedBorderTextFieldStyle())
-               
-            
-            Button(action: {
+            ZStack {
+                Image("Prairie")
+                    .resizable(resizingMode: .stretch)
+                    .aspectRatio(contentMode: .fill)
                 
-            }, label: {
-                Text("Yeehaw")
+                
+                VStack {
+                    
+                    Spacer()
+                    ZStack{
+                        Text("")
+                            .frame(width: 260, height: 260)
+                            .background(.yellow)
+                            .cornerRadius(30)
+                            .opacity(0.7)
+                        
+                        Text(api.joketext)
+                            .font(.body)
+                            .multilineTextAlignment(.center)
+                            .frame(width: 230, height: 230)
+                    }
+                    
+                    
+                    Spacer()
+                    
+                    Text(queryinfo)
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
+                        .frame(width: 300.0, height: 50.0)
+                        .foregroundColor(.brown)
+                    Spacer()
+                }
             }
-             
-            )
-             */
-        }
-        .padding()
-        .onAppear() {
-            Task{
-                await apistuff.loadapi()
+            
+            
+            .padding()
+            
+            .onAppear() {
+                Task{
+                    
+                    await api.loadapi(querystring: urlstring)
+                    queryinfo = "Another randomized Chuck Norris joke"
+                }
+                
+                
             }
         }
     }
